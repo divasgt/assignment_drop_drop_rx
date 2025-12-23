@@ -14,6 +14,7 @@ export default function Home() {
   const [newDesc, setNewDesc] = useState("")
 
   const [deleteLoading, setDeleteLoading] = useState(false)
+  const [toggleLoading, setToggleLoading] = useState(false)
   
   async function fetchTasks() {
     try {
@@ -82,6 +83,27 @@ export default function Home() {
     }
   }
 
+  async function toggleTask(task) {
+    try {
+      setToggleLoading(true)
+      
+      const res = await fetch(`/api/tasks?id=${task.id}`, {
+        method: "PATCH",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({is_completed: !task.is_completed})
+      })
+      const result = await res.json()
+  
+      if (!res.ok) throw new Error(result.error || "Failed to toggle task")
+      
+      setTasks(tasks.map(t => t.id===task.id ? result : t))
+    } catch(err) {
+      alert(err.message)
+    } finally {
+      setToggleLoading(false)
+    }
+  }
+
   const tasksElements = tasks.map(task => (
     <div
       className="group flex items-start gap-4 px-4 py-3 rounded-lg bg-neutral-800 border border-neutral-200/10"
@@ -90,8 +112,9 @@ export default function Home() {
       <input
         className="mt-1.5"
         type="checkbox"
-        // checked={task.is_completed}
-        // onChange={null}
+        checked={task.is_completed}
+        onChange={() => toggleTask(task)}
+        disabled={toggleLoading}
       />
 
       <div className="flex-1">

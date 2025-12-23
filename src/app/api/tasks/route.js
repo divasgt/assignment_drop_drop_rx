@@ -52,3 +52,26 @@ export async function DELETE(request) {
   )
   return NextResponse.json({message: "Task deleted successfully."})
 }
+
+export async function PATCH(request) {
+  const url = new URL(request.url)
+  const id = url.searchParams.get("id")
+  const updatedData = await request.json()
+
+  if (!id) return NextResponse.json(
+    {error: "No id provided"},
+    {status: 500}
+  )
+
+  const {data, error} = await supabase
+    .from('tasks')
+    .update(updatedData)
+    .eq('id', id)
+    .select()
+  
+  if (error) return NextResponse.json(
+    {error: error.message},
+    {status: 500}
+  )
+  return NextResponse.json(data[0])
+}
