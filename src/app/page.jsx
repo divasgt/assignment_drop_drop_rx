@@ -13,7 +13,7 @@ export default function Home() {
   const [newTitle, setNewTitle] = useState("")
   const [newDesc, setNewDesc] = useState("")
 
-  const [deleteLoading, setDeleteLoading] = useState(false)
+  const [deletingId, setDeletingId] = useState(null)
   const [toggleLoading, setToggleLoading] = useState(false)
 
   const [editingId, setEditingId] = useState(null)
@@ -74,7 +74,7 @@ export default function Home() {
     if (!id) return
 
     try {
-      setDeleteLoading(true)
+      setDeletingId(id)
       
       const res = await fetch(`/api/tasks?id=${id}`, {method: "DELETE"})
       const result = await res.json()
@@ -84,7 +84,7 @@ export default function Home() {
     } catch(err) {
       alert(err.message)
     } finally {
-      setDeleteLoading(false)
+      setDeletingId(null)
     }
   }
 
@@ -211,11 +211,11 @@ export default function Home() {
         }
 
         <button
-          className={`flex gap-2 items-center rounded-lg border border-neutral-200/10 bg-neutral-600 hover:bg-red-800 duration-200 px-2 py-1 hover:opacity-80 cursor-pointer ${deleteLoading && "animate-pulse"}`}
+          className={`flex gap-2 items-center rounded-lg border border-neutral-200/10 bg-neutral-600 hover:bg-red-800 duration-200 px-2 py-1 hover:opacity-80 cursor-pointer ${deletingId===task.id && "animate-pulse"}`}
           onClick={() => deleteTask(task.id)}
-          disabled={deleteLoading}
+          disabled={deletingId === task.id}
         >
-          <MdDelete />{deleteLoading ? "Deleting" : "Delete"}
+          <MdDelete />{deletingId===task.id ? "Deleting" : "Delete"}
         </button>
       </div>
     </div>
