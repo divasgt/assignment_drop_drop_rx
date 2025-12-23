@@ -15,6 +15,11 @@ export default function Home() {
 
   const [deleteLoading, setDeleteLoading] = useState(false)
   const [toggleLoading, setToggleLoading] = useState(false)
+
+  const [editingId, setEditingId] = useState(null)
+  const [editTitle, setEditTitle] = useState("")
+  const [editDesc, setEditDesc] = useState("")
+  const [saveEditLoading, setSaveEditLoading] = useState(false)
   
   async function fetchTasks() {
     try {
@@ -104,6 +109,30 @@ export default function Home() {
     }
   }
 
+  async function saveEdit(id) {
+    try {
+      setSaveEditLoading(true)
+      
+      const res = await fetch(`/api/tasks?id=${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: editTitle, description: editDesc }),
+      })
+      const result = await res.json()
+
+      if (!res.ok) throw new Error(result.error || "Failed to save edit.")
+        
+      setTasks(tasks.map((t) => (t.id === id ? result : t)))
+      setEditingId(null)
+      setEditTitle("")
+      setEditDesc("")
+    } catch (err) {
+      alert(err.message)
+    } finally {
+      setSaveEditLoading(false)
+    }
+  }
+
   const tasksElements = tasks.map(task => (
     <div
       className="group flex items-start gap-4 px-4 py-3 rounded-lg bg-neutral-800 border border-neutral-200/10"
@@ -117,16 +146,69 @@ export default function Home() {
         disabled={toggleLoading}
       />
 
-      <div className="flex-1">
-        <h2>{task.title}</h2>
-        <p className="text-neutral-400 text-sm">{task.description || "a"}</p>
+      <div className="flex-1 flex-col gap-1">
+        {task.id === editingId
+          ? (
+          // Editing UI
+          <>
+            <input
+              className="block w-full mb-2 border border-neutral-200/20 rounded-lg px-3 py-1"
+              type="text"
+              placeholder="Edit title:"
+              value={editTitle}
+              onChange={(e) => setEditTitle(e.currentTarget.value)}
+              />
+
+            <input
+              className="block w-full border border-neutral-200/20 rounded-lg px-3 py-1"
+              type="text"
+              placeholder="Edit description:"
+              value={editDesc}
+              onChange={(e) => setEditDesc(e.currentTarget.value)}
+            />
+          </>
+          ) : (
+          // Display UI
+          <>
+            <h2>{task.title}</h2>
+            <p className="text-neutral-400 text-sm">{task.description || "a"}</p>
+          </>
+          )
+        }
       </div>
 
-      {/* Edit and Delete button */}
-      <div className="invisible opacity-0 group-hover:visible group-hover:opacity-100 duration-100 flex flex-col items-end text-xs gap-2">
-        <button className="flex gap-2 rounded-lg border border-neutral-200/10 bg-neutral-600 px-2 py-1 hover:opacity-80 duration-200 cursor-pointer">
-          <MdEdit className=" mt-0.5"/>Edit
-        </button>
+      {/* Edit and Delete buttons */}
+      <div className="invisible opacity-0 group-hover:visible group-hover:opacity-100 duration-100 flex flex-col items-start text-xs gap-2">
+        {/* Show edit button, if editing show save and cancel buttons */}
+        {!editingId
+          ? <button
+            className="flex gap-2 rounded-lg border border-neutral-200/10 bg-neutral-600 px-2 py-1 hover:opacity-80 duration-200 cursor-pointer"
+            onClick={() => {
+              setEditingId(task.id)
+              setEditTitle(task.title)
+              setEditDesc(task.description)
+            }}
+          >
+            <MdEdit className=" mt-0.5"/>Edit
+          </button>
+          : (
+            <>
+              <button
+                className={`flex gap-2 rounded-lg border border-neutral-200/10 bg-neutral-600 px-2 py-1 hover:opacity-80 duration-200 cursor-pointer ${saveEditLoading && "animate-pulse"}`}
+                onClick={() => saveEdit(task.id)}
+                disabled={saveEditLoading}
+              >
+                {saveEditLoading ? "Saving" : "Save"}
+              </button>
+              <button
+                className="flex gap-2 rounded-lg border border-neutral-200/10 bg-neutral-600 px-2 py-1 hover:opacity-80 duration-200 cursor-pointer"
+                onClick={() => setEditingId(null)}
+              >
+                Cancel
+              </button>
+            </>
+          )
+        }
 
         <button
           className={`flex gap-2 items-center rounded-lg border border-neutral-200/10 bg-neutral-600 hover:bg-red-800 duration-200 px-2 py-1 hover:opacity-80 cursor-pointer ${deleteLoading && "animate-pulse"}`}
