@@ -164,7 +164,10 @@ export default function Home() {
     </div>
 
     <div className="grid gap-y-3">
-      {tasksElements}
+      {tasks.length === 0 
+        ? <p className="text-center mt-20">No tasks. Try adding a new task.</p>
+        : tasksElements
+      }
     </div>
   </main> 
   )
