@@ -135,7 +135,7 @@ export default function Home() {
 
   const tasksElements = tasks.map(task => (
     <div
-      className="group flex items-start gap-4 px-4 py-3 rounded-lg bg-neutral-800 border border-neutral-200/10"
+      className={`group flex items-start gap-4 px-4 py-3 rounded-lg border border-neutral-200/10 ${task.is_completed ? "bg-neutral-900" : "bg-neutral-800"}`}
       key={task.id}
     >
       <input
@@ -146,7 +146,7 @@ export default function Home() {
         disabled={togglingId === task.id}
       />
 
-      <div className="flex-1 flex-col gap-1">
+      <div className={`flex-1 flex-col gap-1 ${task.is_completed ? "line-through opacity-70" : ""}`}>
         {task.id === editingId
           ? (
           // Editing UI
