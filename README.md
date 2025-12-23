@@ -13,6 +13,10 @@ Basic full stack app with all CRUD operations: Create task, read tasks, edit tas
   - Supabase
   - Vercel
 
+## 📸 Screenshot
+
+![screenshot 1 image](./public/screenshot1.png)
+
 ## 📦 Getting Started
 
 ### Prerequisites
@@ -58,7 +62,3 @@ Basic full stack app with all CRUD operations: Create task, read tasks, edit tas
     ```
 
 2.  Open your browser and navigate to `http://localhost:3000`.
-
-## 📸 Screenshot
-
-![screenshot 1 image](screenshot1.png)
