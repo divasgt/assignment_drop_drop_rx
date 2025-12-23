@@ -117,6 +117,7 @@ export default function Home() {
           <button
             type="submit"
             className={`rounded-lg border border-neutral-200/10 bg-green-800 px-3 py-1 hover:opacity-90 cursor-pointer`}
+            disabled={addTaskLoading}
           >
             <span className={addTaskLoading && "animate-pulse"}>
               {addTaskLoading ? "Adding..." : "Add"}
