@@ -14,7 +14,7 @@ export default function Home() {
   const [newDesc, setNewDesc] = useState("")
 
   const [deletingId, setDeletingId] = useState(null)
-  const [toggleLoading, setToggleLoading] = useState(false)
+  const [togglingId, setTogglingId] = useState(null)
 
   const [editingId, setEditingId] = useState(null)
   const [editTitle, setEditTitle] = useState("")
@@ -90,7 +90,7 @@ export default function Home() {
 
   async function toggleTask(task) {
     try {
-      setToggleLoading(true)
+      setTogglingId(task.id)
       
       const res = await fetch(`/api/tasks?id=${task.id}`, {
         method: "PATCH",
@@ -105,7 +105,7 @@ export default function Home() {
     } catch(err) {
       alert(err.message)
     } finally {
-      setToggleLoading(false)
+      setTogglingId(null)
     }
   }
 
@@ -143,7 +143,7 @@ export default function Home() {
         type="checkbox"
         checked={task.is_completed}
         onChange={() => toggleTask(task)}
-        disabled={toggleLoading}
+        disabled={togglingId === task.id}
       />
 
       <div className="flex-1 flex-col gap-1">
