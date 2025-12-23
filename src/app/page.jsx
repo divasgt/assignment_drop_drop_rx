@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { MdEdit, MdDelete } from "react-icons/md"
 
 export default function Home() {
   const [tasks, setTasks] = useState([])
@@ -11,6 +12,8 @@ export default function Home() {
   const [newTaskFormShown, setNewTaskFormShown] = useState(false)
   const [newTitle, setNewTitle] = useState("")
   const [newDesc, setNewDesc] = useState("")
+
+  const [deleteLoading, setDeleteLoading] = useState(false)
   
   async function fetchTasks() {
     try {
@@ -25,7 +28,6 @@ export default function Home() {
       setError(err.message)
     } finally {
       setLoading(false)
-      console.log(tasks)
     }
   }
   
@@ -62,21 +64,54 @@ export default function Home() {
     }
   }
   
+  async function deleteTask(id) {
+    if (!id) return
+
+    try {
+      setDeleteLoading(true)
+      
+      const res = await fetch(`/api/tasks?id=${id}`, {method: "DELETE"})
+      const result = await res.json()
+  
+      if (!res.ok) throw new Error(result.error || "Failed to delete task")
+      setTasks(tasks.filter(task => task.id !== id))
+    } catch(err) {
+      alert(err.message)
+    } finally {
+      setDeleteLoading(false)
+    }
+  }
 
   const tasksElements = tasks.map(task => (
     <div
-      className="flex items-baseline gap-4 px-4 py-3 rounded-lg bg-neutral-800 border border-neutral-200/10"
+      className="group flex items-start gap-4 px-4 py-3 rounded-lg bg-neutral-800 border border-neutral-200/10"
       key={task.id}
     >
       <input
+        className="mt-1.5"
         type="checkbox"
         // checked={task.is_completed}
         // onChange={null}
       />
 
-      <div>
+      <div className="flex-1">
         <h2>{task.title}</h2>
         <p className="text-neutral-400 text-sm">{task.description || "a"}</p>
+      </div>
+
+      {/* Edit and Delete button */}
+      <div className="invisible opacity-0 group-hover:visible group-hover:opacity-100 duration-100 flex flex-col items-end text-xs gap-2">
+        <button className="flex gap-2 rounded-lg border border-neutral-200/10 bg-neutral-600 px-2 py-1 hover:opacity-80 duration-200 cursor-pointer">
+          <MdEdit className=" mt-0.5"/>Edit
+        </button>
+
+        <button
+          className={`flex gap-2 items-center rounded-lg border border-neutral-200/10 bg-neutral-600 hover:bg-red-800 duration-200 px-2 py-1 hover:opacity-80 cursor-pointer ${deleteLoading && "animate-pulse"}`}
+          onClick={() => deleteTask(task.id)}
+          disabled={deleteLoading}
+        >
+          <MdDelete />{deleteLoading ? "Deleting" : "Delete"}
+        </button>
       </div>
     </div>
   ))
