@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Task Management System
 
-## Getting Started
+Basic full stack app with all CRUD operations: Create task, read tasks, edit task, and delete task. Made with Next.js for frontend and backend, and Supabase for database.
 
-First, run the development server:
+### 🔗 Live Link: https://assignment-drop-drop-rx.vercel.app/
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Tech Stack
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+  - Next.js (React framework)
+  - React.js
+  - Tailwind CSS
+  - Supabase
+  - Vercel
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📦 Getting Started
 
-## Learn More
+### Prerequisites
 
-To learn more about Next.js, take a look at the following resources:
+- Node.js (>=18)
+- npm or yarn or pnpm
+- Supabase account and project
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Installation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1.  Clone the repository:
 
-## Deploy on Vercel
+    ```bash
+    git clone <repository-url>
+    cd <repository-name>
+    ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2.  Install dependencies:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+    ```bash
+    npm install # or yarn install or pnpm install
+    ```
+
+3.  Set up environment variables:
+
+    - Create a `.env.local` file in the root directory.
+    - Add the following environment variables, replacing the placeholders with your actual values:
+
+    ```
+    NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your_supabase_publishable_key
+    ```
+
+    -   **NEXT_PUBLIC_SUPABASE_URL**: Your Supabase project URL.
+    -   **NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY**: Your Supabase publishable key.
+
+### Running Locally
+
+1.  Start the development server:
+
+    ```bash
+    npm run dev # or yarn dev or pnpm dev
+    ```
+
+2.  Open your browser and navigate to `http://localhost:3000`.
+
+## 📸 Screenshot
+
+![screenshot 1 image](screenshot1.png)
