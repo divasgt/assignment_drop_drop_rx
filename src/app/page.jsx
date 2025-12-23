@@ -223,7 +223,7 @@ export default function Home() {
   
   if (loading) return (
     <main className="min-h-screen p-8">
-      <h1 className="text-2xl font-bold mb-6 text-center">Task Board</h1>
+      <h1 className="text-2xl font-bold mb-6 text-center">Task Management System</h1>
       <div className="text-center mt-52 text-lg animate-pulse">Loading...</div>
     </main>
   )
