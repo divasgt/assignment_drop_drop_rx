@@ -221,12 +221,17 @@ export default function Home() {
     </div>
   ))
   
-  if (loading) return <div className="min-h-screen grid place-items-center p-8 animate-pulse">Loading...</div>
+  if (loading) return (
+    <main className="min-h-screen p-8">
+      <h1 className="text-2xl font-bold mb-6 text-center">Task Board</h1>
+      <div className="text-center mt-52 text-lg animate-pulse">Loading...</div>
+    </main>
+  )
   if (error) return <div className="grid place-items-center p-8">Error: {error}</div>
 
   return (
   <main className="min-h-screen p-8">
-    <h1 className="text-2xl font-bold mb-6 text-center">Task Board</h1>
+    <h1 className="text-2xl font-bold mb-6 text-center">Task Management System</h1>
 
     {/* Add new task form */}
     <div className="flex items-start gap-4 mb-4">
